@@ -1,0 +1,2 @@
+# hanzi
+Entendendo ideogramas chineses!
