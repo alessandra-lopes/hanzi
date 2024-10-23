@@ -19,8 +19,8 @@
     #character-target-container {
       position: relative;
       margin-top: 20px;
-      width: 500px;
-      height: 500px;
+      width: 450px;
+      height: 450px;
       border: 1px solid #ccc;
     }
     #character-target {
@@ -65,7 +65,7 @@
     function drawGridLines() {
       const canvas = document.querySelector('.grid-lines');
       const ctx = canvas.getContext('2d');
-      const size = canvas.width = canvas.height = 500;
+      const size = canvas.width = canvas.height = 450;
 
       ctx.strokeStyle = '#ccc';
       ctx.lineWidth = 1;
@@ -94,8 +94,8 @@
         writer.setCharacter(character); // Atualizar o caractere se já existir um writer
       } else {
         writer = HanziWriter.create(targetElement, character, {
-          width: 500,
-          height: 500,
+          width: 450,
+          height: 450,
           padding: 10,
           strokeColor: '#000',
           delayBetweenStrokes: 1000,
