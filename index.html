@@ -123,9 +123,6 @@
       ctx.moveTo(size, 0);
       ctx.lineTo(0, size);
       ctx.stroke();
-
-      // Voltar para linha contínua se for necessário depois
-      ctx.setLineDash([]); 
     }
 
     function createWriters(characters) {
@@ -167,4 +164,28 @@
         });
 
         writerInstances.push(writer);
-       
+        writer.animateCharacter();
+      });
+    }
+
+    document.getElementById('load-char').addEventListener('click', () => {
+      const charInput = document.getElementById('char-input').value.trim();
+      if (charInput) {
+        currentCharacters = charInput;
+        createWriters(charInput);
+      } else {
+        alert('Por favor, insira um ideograma válido.');
+      }
+    });
+
+    document.getElementById('refresh-animation').addEventListener('click', () => {
+      if (currentCharacters) {
+        createWriters(currentCharacters);
+      } else {
+        alert('Nenhum ideograma carregado para reiniciar.');
+      }
+    });
+  </script>
+
+</body>
+</html>
