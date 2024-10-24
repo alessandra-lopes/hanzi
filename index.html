@@ -47,8 +47,6 @@
     }
 
     .character-target {
-      width: 180px; /* Ajuste para ser menor que o contêiner */
-      height: 180px;
       position: relative;
       z-index: 1;
     }
@@ -66,8 +64,13 @@
       }
 
       .character-target {
-        width: 100px; /* Ajustado para se manter proporcional */
+        width: 100px;
         height: 100px;
+      }
+
+      .grid-lines {
+        width: 100%;
+        height: 100%;
       }
 
       button, input {
@@ -91,8 +94,14 @@
     let writerInstances = [];
     let currentCharacters = '';
 
+    // Função para ajustar o tamanho dos caracteres com base no tamanho da tela
+    function getCharacterSize() {
+      const isMobile = window.innerWidth <= 600;
+      return isMobile ? 100 : 170; // 100 para mobile e 170 para desktop
+    }
+
     function drawGridLines(ctx, size) {
-      ctx.strokeStyle = '#ff0303';
+      ctx.strokeStyle = '#FF0000';
       ctx.lineWidth = 1;
 
       ctx.beginPath();
@@ -115,27 +124,32 @@
       container.innerHTML = '';
       writerInstances = [];
 
+      const charSize = getCharacterSize(); // Obter o tamanho adequado para mobile ou desktop
+
       characters.split('').forEach(character => {
         const charContainer = document.createElement('div');
         charContainer.classList.add('character-container');
 
         const canvas = document.createElement('canvas');
         canvas.classList.add('grid-lines');
-        canvas.width = canvas.height = 200;
+        canvas.width = charSize;
+        canvas.height = charSize;
         charContainer.appendChild(canvas);
 
         const ctx = canvas.getContext('2d');
-        drawGridLines(ctx, 200);
+        drawGridLines(ctx, charSize);
 
         const targetDiv = document.createElement('div');
         targetDiv.classList.add('character-target');
+        targetDiv.style.width = `${charSize}px`;
+        targetDiv.style.height = `${charSize}px`;
         charContainer.appendChild(targetDiv);
 
         container.appendChild(charContainer);
 
         const writer = HanziWriter.create(targetDiv, character, {
-          width: 100, // Tamanho menor para os caracteres
-          height: 100,
+          width: charSize, // Ajustar o tamanho do caractere
+          height: charSize,
           padding: 0, // Remover padding
           strokeColor: '#000',
           delayBetweenStrokes: 1000,
