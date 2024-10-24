@@ -1,2 +1,2 @@
-# hanzi
-Entendendo ideogramas chineses!
+# Hanzi 汉字
+Aprendendo ideogramas chineses!
