@@ -32,6 +32,10 @@
       width: 200px;
       height: 200px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center; /* Centraliza o conteúdo */
     }
 
     .grid-lines {
@@ -44,8 +48,8 @@
     }
 
     .character-target {
-      width: 100%;
-      height: 100%;
+      width: 180px; /* Um pouco menor para dar espaço às grids */
+      height: 180px;
       position: relative;
       z-index: 1;
     }
@@ -61,6 +65,11 @@
       .character-container {
         width: 120px; /* Reduz o tamanho dos caracteres em telas menores */
         height: 120px;
+      }
+
+      .character-target {
+        width: 100px;
+        height: 100px;
       }
 
       .grid-lines, .character-target {
@@ -145,8 +154,8 @@
 
         // Cria a instância do Hanzi Writer para o caractere
         const writer = HanziWriter.create(targetDiv, character, {
-          width: 200,
-          height: 200,
+          width: 180, // Ajuste para centralizar melhor dentro da grid
+          height: 180,
           padding: 10,
           strokeColor: '#000',
           delayBetweenStrokes: 1000,
