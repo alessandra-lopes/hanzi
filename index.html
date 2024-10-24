@@ -21,8 +21,8 @@
 
     #characters-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+      gap: 10px; /* Espaço entre os caracteres */
       justify-content: center;
       margin-top: 20px;
     }
@@ -47,8 +47,8 @@
     }
 
     .character-target {
-      width: 200px;
-      height: 200px;
+      width: 180px; /* Ajuste para ser menor que o contêiner */
+      height: 180px;
       position: relative;
       z-index: 1;
     }
@@ -66,13 +66,8 @@
       }
 
       .character-target {
-        width: 120px;
-        height: 120px;
-      }
-
-      .grid-lines {
-        width: 100%;
-        height: 100%;
+        width: 100px; /* Ajustado para se manter proporcional */
+        height: 100px;
       }
 
       button, input {
@@ -97,7 +92,7 @@
     let currentCharacters = '';
 
     function drawGridLines(ctx, size) {
-      ctx.strokeStyle = '#ccc';
+      ctx.strokeStyle = '#ff0303';
       ctx.lineWidth = 1;
 
       ctx.beginPath();
@@ -139,9 +134,9 @@
         container.appendChild(charContainer);
 
         const writer = HanziWriter.create(targetDiv, character, {
-          width: 200,
-          height: 200,
-          padding: 0,  // Remover padding
+          width: 170, // Tamanho menor para os caracteres
+          height: 170,
+          padding: 0, // Remover padding
           strokeColor: '#000',
           delayBetweenStrokes: 1000,
           showOutline: true,
