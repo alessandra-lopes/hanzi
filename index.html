@@ -16,27 +16,37 @@
       margin: 0;
       background-color: #a5a5af;
     }
-    #character-target-container {
-      position: relative;
+
+    #characters-container {
+      display: flex;
+      flex-direction: row;
+      gap: 10px; /* Espaço entre os caracteres */
       margin-top: 20px;
-      width: 400px;
-      height: 400px;
+    }
+
+    .character-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
       border: 1px solid #ccc;
     }
-    #character-target {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      z-index: 1; /* Caractere deve ficar acima */
-    }
+
     .grid-lines {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0; /* Grids ficam abaixo */
+      z-index: 0;
     }
+
+    .character-target {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
     button, input {
       margin-top: 10px;
       padding: 10px;
@@ -48,25 +58,22 @@
 
   <h1>Estude Ideogramas Chineses</h1>
 
-  <!-- Caixa de input para o usuário inserir o ideograma -->
-  <input type="text" id="char-input" placeholder="Digite o ideograma aqui" maxlength="1">
-  <button id="load-char">Carregar Ideograma</button>
+  <!-- Caixa de input para o usuário inserir os ideogramas -->
+  <input type="text" id="char-input" placeholder="Digite os ideogramas aqui">
+  <button id="load-char">Carregar Ideogramas</button>
 
-  <!-- Div onde o ideograma será desenhado, com linhas guias -->
-  <div id="character-target-container">
-    <canvas class="grid-lines"></canvas> <!-- Canvas para desenhar as grids -->
-    <div id="character-target"></div> <!-- Hanzi Writer alvo -->
-  </div>
+  <!-- Botão para reiniciar a animação -->
+  <button id="refresh-animation">Reiniciar Animação</button>
+
+  <!-- Contêiner para os ideogramas -->
+  <div id="characters-container"></div>
 
   <script>
-    let writer; // Variável global para o HanziWriter
+    let writerInstances = []; // Array para armazenar múltiplas instâncias do HanziWriter
+    let currentCharacters = ''; // Armazena os caracteres atuais
 
     // Função para desenhar as grids de escrita
-    function drawGridLines() {
-      const canvas = document.querySelector('.grid-lines');
-      const ctx = canvas.getContext('2d');
-      const size = canvas.width = canvas.height = 400;
-
+    function drawGridLines(ctx, size) {
       ctx.strokeStyle = '#ccc';
       ctx.lineWidth = 1;
 
@@ -87,40 +94,71 @@
       ctx.stroke();
     }
 
-    // Função para criar o HanziWriter com o ideograma desejado
-    function createWriter(character) {
-      const targetElement = document.getElementById('character-target');
-      if (writer) {
-        writer.setCharacter(character); // Atualizar o caractere se já existir um writer
-      } else {
-        writer = HanziWriter.create(targetElement, character, {
-          width: 400,
-          height: 400,
+    // Função para criar uma instância do HanziWriter para cada caractere
+    function createWriters(characters) {
+      const container = document.getElementById('characters-container');
+      container.innerHTML = ''; // Limpa o container antes de criar novas instâncias
+      writerInstances = []; // Reseta o array de instâncias
+
+      characters.split('').forEach(character => {
+        // Cria um contêiner para cada caractere
+        const charContainer = document.createElement('div');
+        charContainer.classList.add('character-container');
+
+        // Adiciona um canvas para as grids
+        const canvas = document.createElement('canvas');
+        canvas.classList.add('grid-lines');
+        canvas.width = canvas.height = 200;
+        charContainer.appendChild(canvas);
+
+        // Desenha as grids no canvas
+        const ctx = canvas.getContext('2d');
+        drawGridLines(ctx, 200);
+
+        // Adiciona o contêiner do caractere para o Hanzi Writer
+        const targetDiv = document.createElement('div');
+        targetDiv.classList.add('character-target');
+        charContainer.appendChild(targetDiv);
+
+        container.appendChild(charContainer);
+
+        // Cria a instância do Hanzi Writer para o caractere
+        const writer = HanziWriter.create(targetDiv, character, {
+          width: 200,
+          height: 200,
           padding: 10,
           strokeColor: '#000',
           delayBetweenStrokes: 1000,
           showOutline: true, // Mostra o contorno do ideograma
           showCharacter: true,
         });
-      }
-      writer.animateCharacter();
+
+        writerInstances.push(writer);
+        writer.animateCharacter();
+      });
     }
 
-    // Evento para carregar o ideograma a partir do input
+    // Evento para carregar os ideogramas a partir do input
     document.getElementById('load-char').addEventListener('click', () => {
-      const char = document.getElementById('char-input').value.trim();
-      if (char) {
-        createWriter(char);
-        drawGridLines(); // Desenha as grids sempre que carregar um novo caractere
+      const charInput = document.getElementById('char-input').value.trim();
+      if (charInput) {
+        currentCharacters = charInput; // Armazena os caracteres atuais
+        createWriters(charInput); // Cria múltiplos Hanzi Writers
       } else {
         alert('Por favor, insira um ideograma válido.');
       }
     });
 
-    // Iniciar com o ideograma padrão
-    createWriter('好');
-    drawGridLines(); // Desenha as grids ao carregar a página
+    // Botão para reiniciar a animação dos caracteres atuais
+    document.getElementById('refresh-animation').addEventListener('click', () => {
+      if (currentCharacters) {
+        createWriters(currentCharacters); // Recarrega as animações
+      } else {
+        alert('Nenhum ideograma carregado para reiniciar.');
+      }
+    });
   </script>
 
 </body>
 </html>
+
