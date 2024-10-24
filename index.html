@@ -21,8 +21,8 @@
 
     #characters-container {
       display: flex;
-      flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
-      gap: 10px; /* Espaço entre os caracteres */
+      flex-wrap: wrap;
+      gap: 10px;
       justify-content: center;
       margin-top: 20px;
     }
@@ -100,10 +100,15 @@
       return isMobile ? 100 : 170; // 100 para mobile e 170 para desktop
     }
 
+    // Função para desenhar as linhas guias com linhas pontilhadas
     function drawGridLines(ctx, size) {
       ctx.strokeStyle = '#f00';
       ctx.lineWidth = 1;
 
+      // Definir as linhas como pontilhadas
+      ctx.setLineDash([5, 5]);
+
+      // Desenha linhas horizontais e verticais
       ctx.beginPath();
       ctx.moveTo(0, size / 2);
       ctx.lineTo(size, size / 2);
@@ -111,12 +116,16 @@
       ctx.lineTo(size / 2, size);
       ctx.stroke();
 
+      // Desenha as diagonais
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(size, size);
       ctx.moveTo(size, 0);
       ctx.lineTo(0, size);
       ctx.stroke();
+
+      // Voltar para linha contínua se for necessário depois
+      ctx.setLineDash([]); 
     }
 
     function createWriters(characters) {
@@ -148,7 +157,7 @@
         container.appendChild(charContainer);
 
         const writer = HanziWriter.create(targetDiv, character, {
-          width: charSize, // Ajustar o tamanho do caractere
+          width: charSize,
           height: charSize,
           padding: 0, // Remover padding
           strokeColor: '#000',
@@ -158,28 +167,4 @@
         });
 
         writerInstances.push(writer);
-        writer.animateCharacter();
-      });
-    }
-
-    document.getElementById('load-char').addEventListener('click', () => {
-      const charInput = document.getElementById('char-input').value.trim();
-      if (charInput) {
-        currentCharacters = charInput;
-        createWriters(charInput);
-      } else {
-        alert('Por favor, insira um ideograma válido.');
-      }
-    });
-
-    document.getElementById('refresh-animation').addEventListener('click', () => {
-      if (currentCharacters) {
-        createWriters(currentCharacters);
-      } else {
-        alert('Nenhum ideograma carregado para reiniciar.');
-      }
-    });
-  </script>
-
-</body>
-</html>
+       
