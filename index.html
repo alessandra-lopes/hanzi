@@ -12,15 +12,18 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       background-color: #a5a5af;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     #characters-container {
       display: flex;
-      flex-direction: row;
+      flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
       gap: 10px; /* Espaço entre os caracteres */
+      justify-content: center;
       margin-top: 20px;
     }
 
@@ -51,6 +54,24 @@
       margin-top: 10px;
       padding: 10px;
       font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      /* Ajustes para telas menores */
+      .character-container {
+        width: 120px; /* Reduz o tamanho dos caracteres em telas menores */
+        height: 120px;
+      }
+
+      .grid-lines, .character-target {
+        width: 100%;
+        height: 100%;
+      }
+
+      button, input {
+        width: 100%; /* Botões e input ocupam a largura completa */
+        font-size: 14px; /* Texto um pouco menor */
+      }
     }
   </style>
 </head>
@@ -161,4 +182,3 @@
 
 </body>
 </html>
-
